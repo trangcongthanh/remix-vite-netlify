@@ -1,0 +1,22 @@
+logo: /images/homepage/logo.png
+title: Trang Công Thành
+description: Senior Bug Breeder
+headline2: Mình là Thành, kỹ sư phần mềm đến từ Hà Nội, Việt Nam.
+socials:
+  - url: https://github.com/trangcongthanh
+    icon: github
+  - url: https://facebook.com/trangcongthanh
+    icon: facebook
+  - url: https://twitter.com/trangcongthanh
+    icon: twitter
+mainNavigation:
+  - url: /about-me
+    label: Thành?
+  - url: /
+    label: Bài viết
+  - url: /tag/chuong-hai
+    label: '#chuong-hai'
+  - url: /tag/code-suy
+    label: '#code-suy'
+  - url: /tag/vai-thu-linh-tinh
+    label: '#vai-thu-linh-tinh'

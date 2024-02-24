@@ -1,0 +1,82 @@
+---
+title: react-query, typescript và error response
+thumbnail:
+  url: >-
+    /images/posts/2021-06-01-react-query-typescript-va-error-response/thumbnail/url.webp
+  caption: Hai mảng led màu xanh
+summary: Đau đầu vì declare error type? Đọc ngay bài này để trị dứt điểm 😎
+isDraft: false
+publishedAt: '2021-06-01'
+updatedAt: '2021-06-01'
+tags:
+  - code-suy
+seo:
+  discriminant: false
+---
+Một ngày đẹp trời, công ty mình bắt đầu một dự án dùng restful thay vì `graphql`. Với sai lầm của tuổi trẻ là dùng `apollo-client` cho restful hoặc tự viết network layer bằng `redux`, mình khuyên anh em dùng `react-query`. Mình cũng chưa có kinh nghiệm ngay lúc gợi ý nhưng trông `react-query` rất là hứa hẹn lúc mình mới phát hiện ra 🤣 Tại một phần là được [Kent C. Dodds](https://twitter.com/kentcdodds) giới thiệu nên mình cũng khá là yên tâm.
+
+Sau hơn nửa năm sử dụng từ version 1.x.x thì điểm duy nhất mình thấy khó chịu đó là việc phải khai báo type cho cái error response.
+
+Bình thường dùng mấy cái hook của thư viện sẽ như này:
+
+```typescript
+function fetchThingById(ctx: QueryFunctionContext<{ id: string }>): Promise<{ id: string; name: string }> {
+  const [, { id }] = ctx
+  return new Promise((resolve) => resolve({ id, name: id }))
+}
+const { data, error } = useQuery([UniqueRequetKey, params], fetchThingById)
+```
+
+Dễ phải không? Nhưng nố nồ nô, typescript sẽ báo là cái `error` sẽ là `unknown`. So sad! Mỗi khi dùng lại phải cast type. Khá là bực luôn 😩
+
+Vì `useQuery` có hỗ trợ generic type, nên muốn quất cái type cho `error` một đồng nghiệp của mình chơi như này:
+
+```typescript
+type Response = { id: string; name: string }
+type Error = { code: number; message: string }
+type Params = { id: string }
+
+function fetchThingById(ctx: QueryFunctionContext<Params>): Promise<Response> {
+  const [, { id }] = ctx
+  return new Promise((resolve) => resolve({ id, name: id }))
+}
+const { data, error } = useQuery<Response, Params, Error>([UniqueRequetKey, params], fetchThingById)
+```
+
+Trông cũng không đến nỗi tệ phải không? Nhưng thật ra, queryFn `fetchThingById` và type của nó lại nằm ở một nơi khác không chung file với component dùng nó. Chưa kể, tên một số type nó không ngắn gọn như vậy. Thành ra lúc đọc code, nhiều lúc nhìn chỉ thấy type là type. Và nhất là tự dưng mình đã mất công làm type cho từng endpoint trong SDK rồi. Xong lúc dùng lại phải `import` thêm một lần nữa. Cảm giác khá bức xúc 😩 Một vài anh em khá là cần mẫn khai báo hết tất cả các thể loại generic type cho cả ba cái hooks hay dùng luôn. Nhưng mình không chịu, mình đi tìm cách để sống dễ thở hơn 🤧
+
+Mình chỉ muốn define response type lúc define endpoint. Error type chỉ khai báo 1 lần thôi. Vì server của bên mình luôn chỉ trả error theo format đã được quy định trước.
+
+Tìm gần hết một ngày, quẫn ghê. Định pm twitter hỏi author của `react-query` xem làm như nào thì ngon. Mà mình chợt nhớ ra mình có override lại type declaration của `styled-components` để hỗ trợ vụ declare type cho theme object. Nên thử luôn và thành công mỹ mãn.
+
+**1. Đầu tiên là tạo file declare cho react-query**
+
+```bash
+mkdir -p src/types
+touch react-query.d.ts
+```
+
+**2. Override declaration**
+
+```typescript
+import { QueryFunction, QueryKey, UseQueryOptions, UseQueryResult } from 'react-query'
+
+declare module 'react-query' {
+  // Magic here!
+  type ErrorResponse = {
+    code: number
+    message: string
+  }
+  export declare function useQuery<TQueryFnData = unknown, TError = ErrorResponse, TData = TQueryFnData>(
+    queryKey: QueryKey,
+    queryFn: QueryFunction<TQueryFnData>,
+    options?: UseQueryOptions<TQueryFnData, TError, TData>,
+  ): UseQueryResult<TData, TError>
+}
+```
+
+Xong! Giờ chỉ việc nhét cái `queryFn` vào hook là `error` sẽ luôn có `default type ErrorResponse`. Bạn vẫn có thể đổi lại type khác nếu request đấy nó không trả lại error như cái default kia bằng cách như ví dụ 2 ở trên.
+
+Ngoài ra bạn có thể sửa cho `useInfiniteQuery` và `useMutation` nữa. Và tuỳ vào cách các bạn dùng để configs mấy cái hook mà override lại cho đúng. Để biết nên override cái nào thì các bạn chui thẳng vào file type của `react-query` mà xem thôi. Hoặc không thì copy đống overload về rồi sửa hết lại một thể luôn 🤣
+
+Happy coding!

@@ -1,0 +1,38 @@
+---
+title: Blog mới 13.2
+thumbnail:
+  url: /images/posts/2023-02-27-blog-moi-13-2/thumbnail/url.jpg
+  caption: Bàn làm việc mới tại Missing Corner
+summary: Cuối tuần rảnh rỗi, upgrade chiếc blog lên 13.2
+isDraft: false
+publishedAt: '2023-02-27'
+updatedAt: '2023-02-27'
+tags:
+  - code-suy
+  - reactjs
+  - nextjs
+previous: 2021-05-29-lai-mot-blog-moi
+seo:
+  discriminant: false
+---
+Từ ngày làm chiếc blog mới, thế mà đã gần hai năm rồi. Đáng sợ thật!
+
+Gần hai năm trước, lọ mọ stack `NextJS` hi vọng có một ngày sẽ được sử dụng cho dự án nào đó. Nhưng đến nay, mình vẫn chỉ làm chủ yếu là CSR (client-side rendering) nên vẫn chỉ có chiếc blog này để đu trend với `NextJS`. Hôm vừa rồi, `NextJS` ra bản 13.2 với mấy cái thay đổi nghe nói là ưu việt 😄. Lại đúng ngày cuối tuần rảnh rỗi nên mình đã nâng cấp nó lên bản mới nhất.
+
+### App dir
+
+File-based routing mới đầu trông rất dị nhưng lại rất là hợp lý. Điểm đáng tiền nhất với mình là việc tìm file cần mở rất là nhanh. Đang ở url nào, thì tìm thư mục đấy thôi. Các app CSR mình đang làm, nhiều khi phải mò từ tận root router mới biết file cần mở nó ở đâu.
+
+### ~~CSS-in-JS~~ TailwindCSS
+
+Và một lần nữa, mình lại thử `tailwind`. Mặc dù vẫn ghét cái cách đặt tên class nhưng dùng vài lần thì cũng bắt đầu thấy đỡ dần. Phần lớn nhưng thứ cơ bản mình đều dùng `tailwind`. Phần nào khó quá mình sẽ dùng `CSS Module` với plugin hỗ trợ viết nested selector. Tất nhiên là với chiếc blog này thì chỉ cần `tailwind` là đủ rồi 😅.
+
+Nhiều người vẫn thấy bảo đọc đống class của `tailwind` là hiểu luôn nó làm gì. Nhưng mình vẫn chưa thể quen được với đống spagetti ấy. Chỉnh sửa mấy cái class cũng bất tiện. Chắc một phần do mình dùng vim nên jump giữa các class nó không nhanh bằng dùng chuột. Nói chung là vẫn chưa quen 😔.
+
+### ~~utterances~~ gitcus
+
+Mình đổi từ `utterances` sang `gitcus` cho phần bình luận. `gitcus` dùng *GitHub Discussion* thay vì *Issue*. Hỗ trợ trả lời trong thread trông đỉnh hơn. Mặc dù blog chả có ai đọc, cũng chả có ai bình luận bao giờ 🤣.
+
+### contentlayer
+
+Thay vì tự viết phần parse mdx, mình chuyển sang `contentlayer`. Tự viết thì được tùy ý chỉnh sửa content theo ý mình hơn. Nhưng nhìn lại `contentlayer` cũng đủ cho mình dùng. Sau này lib hỗ trợ thêm fetch từ notion hay cms nào đó nữa thì chắc chuyển migrate nó cũng đỡ vất hơn. Và nghe nói là performance cũng sẽ xịn hơn là tự viết 🫣.

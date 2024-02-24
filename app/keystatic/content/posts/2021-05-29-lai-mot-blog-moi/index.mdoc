@@ -1,0 +1,82 @@
+---
+title: Lại một blog mới
+thumbnail:
+  url: /images/posts/2021-05-29-lai-mot-blog-moi/thumbnail/url.webp
+  caption: Bàn làm việc và một cốc latte
+summary: Chiếc blog và đôi lời về NextJS, Tailwind CSS
+isDraft: false
+publishedAt: '2021-05-29'
+updatedAt: '2021-05-29'
+tags:
+  - code-suy
+next: 2023-02-27-blog-moi-13-2
+seo:
+  discriminant: false
+---
+Oh, xin chào mọi người! Lại là Thành và một chiếc blog mới.
+
+Sau một tuần buồn chán khi làm việc nhiều lúc không ra. Nên mình quyết định làm cái blog để chia sẻ nhiều vấn đề trong công việc, cuộc sống và những thứ linh tinh khác.
+
+Mình từng đã từng làm rất nhiều blog với nhiều stack khác nhau. Viết nhiều nhưng không lưu lại mấy vì hầu như chỉ muốn trải nghiệm các công nghệ khác nhau thôi. Kì này hi vọng sẽ thọ lâu hơn một chút 😅
+
+### Stack
+
+Stack lần này là [JAMStack](https://jamstack.org):
+
+- Framework [NextJS](https://nextjs.org/)
+- Typing [Typescript](https://typescriptlang.org)
+- Styling [~~TailwindCSS~~](https://tailwindcss.com/) [Styled Components](https://styled-components.com/)
+- Hosting [Vercel](https://vercel.com)
+- CMS [~~StrapiJS~~](https://strapi.io) [MDX](https://mdxjs.com)
+- Comment system [utterances](https://utteranc.es/)
+
+### GatsbyJS và NextJS
+
+Cỡ 2-3 năm trước, mình có trải thử [GatsbyJS](https://gatsbyjs.com). Vì hồi đó đang hot `graphql` nhiều quá! Nên thấy `GatsbyJS` cái là vập vào luôn. Xong cũng ham hố quất luôn lên production cho vài khách hàng của công ty, làm vài chiếc blog cho bạn bè. Nhưng giờ nghĩ lại thì trải nghiệm không vui nữa. Nhiều khi cái `graphql` lại là cản trở nhiều khi mà có nhiều data source hoặc tự dưng feature nó nở ra kiểu phức tạp một chút là phải hack toè loe. Hồi đó khá chán. Xong bẵng đi 1 thời gian, không làm static site nữa nên cũng không theo dõi `GatsbyJS` nhiều nữa. Không biết DX bây giờ như nào rồi.
+
+Còn lần này, trải nghiệm với `NextJS` thấy DX khá là vui. Mọi thứ đơn giản hơn hẳn. Data source thích lấy từ đâu cũng được, viết script fetch tùm lum tè le về, hay viết SQL lấy thẳng từ DB ra cũng được. Tại ban đầu mình định dùng `StrapiJS` làm CMS thì chui thẳng vào DB được là kèo ngon luôn. Nhưng sau nghĩ dùng `Markdown` thôi cho đơn giản. Blog cùi cùi làm phức tạp quá cũng vất vả.
+
+### TailwindCSS
+
+Mình cũng thử dùng `TailwindCSS`, nhưng trải nghiệm với `TailwindCSS` của mình là không vui. Có vài điều mình không thích `TailwindCSS` là:
+
+**1. Utilities name không theo một standard gì cả. Khá là bực mình.**
+
+Kiểu `justify-content: center` là `justify-center`, thì `align-items: center` sẽ là `align-center`. Nhưng nồ nố nô, nó sẽ là `items-center`. Rồi `line-height` thì lại là `leading`. WTF?
+
+**2. CSS Selector**
+
+Cảm giác mình cứ bị chặt chân chặt tay vậy ý. Khi viết `CSS` mình hay dùng selector kiểu này:
+
+```css
+ul > li:not(:last-child) {
+  margin-bottom: 8px;
+}
+```
+
+Sang `TailwindCSS` thì hình như phải viết kiểu:
+
+```javascript
+// hoặc change className theo itemIndex
+<ul>
+  {itemListing.map((item, itemIndex) => <li className="mb-1 last:mb-0">)}
+</ul>
+```
+
+🤦‍♂️ Và nó chỉ giới hạn mấy cái kiểu `odd`, `even`, `first`, `last` 😩 Mấy cái `nth` thì không có luôn... Thế là lại nửa viết `CSS` nửa `TailwindCSS` hơi dị.
+
+**3. Readablility**
+
+Thật sự là 😞 Nhìn vào cái component hổ lốn className khá đuối. Chưa kể nhiều lúc muốn tweak gì đó, tìm cái className để sửa mệt phết.
+
+Thế là quyết định về lại với `Styled Components` cho thân quen.
+
+### utterances
+
+Lúc bắt đầu làm cũng nghĩ tới làm sao nhét được quả bình luận vào cho mọi người tám tám chơi. Trong lúc dạo chơi loanh quanh thì mình phát hiện ra quả `utterances` 😎 Thế là nhúng vào luôn. Xịn vãiiiii! Nhưng sắp tới sẽ trải thử 1 comment system bằng `Firebase` cho vui.
+
+Tạm sơ qua về chiếc blog mới thế thôi. Mình sẽ lên 1 loạt bài về việc tự làm một chiếc blog với `NextJS` trong thời gian tới (Không biết có ai đọc không nữa 🤧).
+
+Bái bai!
+
+[Thành](https://trangcongthanh.com/about-me)

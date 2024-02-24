@@ -1,0 +1,19 @@
+---
+title: TIL - Upgrade depenedencies
+thumbnail:
+  url: /images/posts/2023-06-18-til-yarn-install/thumbnail/url.jpg
+summary: Yarn install/upgrade không update peerDependencies 😩
+isDraft: false
+publishedAt: '2023-06-18'
+updatedAt: '2023-06-18'
+tags:
+  - code-suy
+  - yarn
+seo:
+  discriminant: false
+---
+Trước đây mình cứ nghĩ, `yarn install/upgrade package@newer-version` có thể dùng để upgrade các package lên version mới nhất. Nhưng hôm nay mình phát hiện ra, yarn install/upgrade không cài lại peerDependencies.
+
+Chuyện là thế này, khi mình upgrade react-query từ `5.0.0-alpha.59` lên `5.0.0-alpha.63`, app của mình liên tục crash với lỗi: `observe.updateResult is not a function`. Nhưng khi mình tạo một project mới và cài thẳng version 5.0.0-alpha.63 thì mọi thứ lại chạy bình thường 😩. Sau một hồi loay hoay, mình phát hiện ra version của `query-core` không được update lên bản mới nhất (hoặc bản có thể chạy được với v63) mà bị lock ở `v47`. Và cách duy nhất để upgrade là xóa hoàn toàn `react-query` đi install lại từ đầu.
+
+Damn! 🤕
